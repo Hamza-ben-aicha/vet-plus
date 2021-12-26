@@ -1,3 +1,4 @@
+import  mongoose  from "mongoose";
 import PostMessage from "../models/postMessage.js";
 
 export const getPosts= async (req,res)=>{
@@ -22,4 +23,19 @@ export const createPost=  async (req,res)=>{
       } catch (error) {
         res.status(409).json({message: error.message});
       }  
+}
+
+export const updatePost=  async (req,res)=>{
+    //how we konw that we going to recieve the id param bellow -> because we set our route /id 
+    const {id: _id}= req.params; // rename our prop id to _id 
+    const post = req.body;
+
+    if(!mongoose.Types.ObjectId.isValid(_id))return res.status(404).send('No post with that id');
+
+
+    // to update post we have to call  our model which is the PostMessage
+    // second parameter we have to pass the whole updating post 
+    const updatedPost= await PostMessage.findByIdAndUpdate(_id, {...post, _id} ,{new: true});
+    
+    res.json(updatedPost);
 }
