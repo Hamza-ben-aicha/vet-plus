@@ -39,3 +39,15 @@ export const updatePost=  async (req,res)=>{
     
     res.json(updatedPost);
 }
+
+export const deletePost=  async (req,res)=>{
+    //how we konw that we going to recieve the id param bellow -> because we set our route /id 
+    const {id}= req.params;
+
+    //this lane bellow is for test if that id valid or not 
+    if(!mongoose.Types.ObjectId.isValid(id))return res.status(404).send('No post with that id');
+
+    await PostMessage.findByIdAndDelete(id);
+    
+    res.json({message : 'Post deleted successfully '});
+}
