@@ -51,3 +51,15 @@ export const deletePost=  async (req,res)=>{
     
     res.json({message : 'Post deleted successfully '});
 }
+
+export const likePost = async (req,res)=>{
+    //how we konw that we going to recieve the id param bellow -> because we set our route /id 
+    const {id :_id}= req.params;
+
+    //this lane bellow is for test if that id valid or not 
+    if(!mongoose.Types.ObjectId.isValid(_id))return res.status(404).send('No post with that id');
+   
+    const post= await PostMessage.findById(_id);
+    const updatedPost = await PostMessage.findByIdAndUpdate(_id,{likeCount: post.likeCount+1},{new: true});
+    res.json(updatedPost)
+}
