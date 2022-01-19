@@ -13,7 +13,7 @@ export const getPosts= async (req,res)=>{
 } 
 
 export const createPost=  async (req,res)=>{
-    //req.body need to crete form for making posts
+    //req.body need to create form for making posts
     const post= req.body;  
     const newpost= new PostMessage({...post, creator: req.userId, createdAt : new Date()});
     try {
@@ -60,7 +60,7 @@ export const likePost = async (req,res)=>{
    
     const post= await PostMessage.findById(_id);
     
-    const index = post.likes.findIndex((id)=> id === String(req.userId)); // if the user already like the post so it will be a dislike not like 
+    const index = post.likes.findIndex((_id)=> _id === String(req.userId)); // if the user already like the post so it will be a dislike not like 
 
     if (index === -1) {
         //like the post 
