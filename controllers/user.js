@@ -20,7 +20,7 @@ export const signin = async (req,res) =>{
 }
 
 export const signup = async (req,res) =>{
-    const {email,password, confirmPassword, firstName,lastName} =req.body;
+    const {email,password, confirmPassword, firstName,lastName,CINE ,phone,isEntreprise } =req.body;
 
     try {
         const existingUser = await User.findOne({email});
@@ -28,7 +28,7 @@ export const signup = async (req,res) =>{
         if(password !== confirmPassword)return res.status(400).jason({message: "Passwords don't match."});
         // before we store the user we first need to hash the password
         const hashedPassword = await bcrypt.hash(password, 12);
-        const result = await User.create({email, password: hashedPassword, name:`${firstName} ${lastName}`});
+        const result = await User.create({email, password: hashedPassword, name:`${firstName} ${lastName}`,isEntreprise,phone, CINE});
         const token = jwt.sign({email: result.email, id:result._id},'test',{ expiresIn: '1h'}); //json web token(jwt) need to send to our frontend 
         res.status(200).json({result , token});
     } catch (error ) {
